@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:sqlite:swapi.db
+    driver-class-name: org.sqlite.JDBC
+
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+
+  sql:
+    init:
+      mode: always

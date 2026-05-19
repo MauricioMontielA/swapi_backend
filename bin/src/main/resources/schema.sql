@@ -2,12 +2,8 @@ PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS sp_user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    email VARCHAR NOT NULL UNIQUE,
-    username VARCHAR,
-    password_hash VARCHAR,
-    auth_provider VARCHAR NOT NULL, 
-    provider_user_id VARCHAR,
-    profile_image_url VARCHAR,
+    email VARCHAR,
+    password VARCHAR,
     created_at TIMESTAMP,
     modified_at TIMESTAMP
 );
@@ -60,14 +56,14 @@ CREATE TABLE IF NOT EXISTS sp_collectibleItemAttribute (
     created_at TIMESTAMP,
     modified_at TIMESTAMP,
 
-    FOREIGN KEY (collectible_item_id ) REFERENCES sp_collectibleItem(id),
+    FOREIGN KEY (item_id) REFERENCES sp_collectibleItem(id),
     FOREIGN KEY (attribute_definition_id) REFERENCES sp_attributeDefinition(id)
 );
 
 CREATE TABLE IF NOT EXISTS sp_userCollectible (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
-    collectible_item_id  INTEGER,
+    item_id INTEGER,
     quantity INTEGER,
     notes VARCHAR,
     is_for_trade BOOLEAN,
@@ -76,7 +72,7 @@ CREATE TABLE IF NOT EXISTS sp_userCollectible (
     modified_at TIMESTAMP,
 
     FOREIGN KEY (user_id) REFERENCES sp_user(id),
-    FOREIGN KEY (collectible_item_id ) REFERENCES sp_collectibleItem(id)
+    FOREIGN KEY (item_id) REFERENCES sp_collectibleItem(id)
 );
 
 CREATE TABLE IF NOT EXISTS sp_listing (
