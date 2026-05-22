@@ -19,12 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.swapi.dto.CollectionDtoResponse;
+import com.swapi.dto.UserDtoResponse;
 import com.swapi.mapper.CollectibleItemMapper;
 import com.swapi.mapper.CollectionMapper;
+import com.swapi.mapper.UserMapper;
 import com.swapi.model.CollectibleItem;
 import com.swapi.model.Collection;
 import com.swapi.repositories.CollectibleItemRepository;
 import com.swapi.repositories.CollectionRepository;
+import com.swapi.repositories.UserRepository;
 
 import jakarta.persistence.Column;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +40,9 @@ public class AdminController {
 	private final CollectionRepository collectionRepo;
 	private final CollectibleItemRepository collectibleItemRepo;
 	private final CollectionMapper collectionMapper;
+	private final UserRepository userRepo;
+	private final UserMapper userMapper;
+
 	
 	
 	@PostMapping("/collection")
@@ -83,6 +89,11 @@ public class AdminController {
 	    }
 
 	    return collectibleItemRepo.findAll();
+	}
+	
+	@GetMapping("/user")
+	public List<UserDtoResponse> getAllUsers() {
+		return userMapper.toResponseList(userRepo.findAll());
 	}
 
 }
