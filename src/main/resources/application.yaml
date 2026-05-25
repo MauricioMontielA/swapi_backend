@@ -1,3 +1,8 @@
+app:
+  jwt:
+    secret: e21fff8c5d8cfdb9da9e20f3df89300126a9f9e936c2f29451ff592672cc7afa
+    access-token-expiration-ms: 900000
+    refresh-token-expiration-ms: 2592000000
 spring:
   datasource:
     url: jdbc:sqlite:swapi.db
@@ -19,3 +24,4 @@ logging:
     level:
       org.hibernate.SQL: DEBUG
       org.hibernate.orm.jdbc.bind: TRACE
+      org.springframework.security: DEBUG

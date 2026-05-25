@@ -31,14 +31,11 @@ public class UserCollectibleService {
 	private final CollectibleItemMapper colItemMapper;
 
 	
-	public UserCollectibleDtoResponse  createUserCollectible(UserCollectibleDtoRequest dtoRequest) {
-		Optional<User> user = userRepo.findById(dtoRequest.getUserId());
+	public UserCollectibleDtoResponse  createUserCollectible(User user, UserCollectibleDtoRequest dtoRequest) {
 		Optional<CollectibleItem> item = collItemRepo.findById(dtoRequest.getCollectibleItemId());
 
-		if (!user.isPresent() || !item.isPresent()) {
-			return null;
-		}
-		UserCollectible newUserItem = userColMapper.toEntity(dtoRequest, user.get(), item.get());
+
+		UserCollectible newUserItem = userColMapper.toEntity(dtoRequest, user, item.get());
 		userCollRepo.save(newUserItem);
 		return userColMapper.toResponse(newUserItem);
 	}
@@ -54,7 +51,8 @@ public class UserCollectibleService {
 				.toList();
 	}
 	
-	public List<CollectibleItemDtoResponse> search(UserCollectibleFilter filter) {
+	public List<CollectibleItemDtoResponse> search(Long userId, UserCollectibleFilter filter) {
+		filter.setUserId(userId);
 		return userCollRepo
 	            .findAll(UserCollectibleSpecs.withFilter(filter))
 	            .stream()

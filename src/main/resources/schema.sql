@@ -128,3 +128,13 @@ CREATE TABLE IF NOT EXISTS sp_tradeItem (
     FOREIGN KEY (to_participant_id) REFERENCES sp_tradeParticipant(id),
     FOREIGN KEY (user_collectible_id) REFERENCES sp_userCollectible(id)
 );
+
+CREATE TABLE IF NOT EXISTS sp_refreshToken (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    token VARCHAR(500) NOT NULL UNIQUE,
+    user_id INTEGER NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    revoked BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES sp_user(id)
+);

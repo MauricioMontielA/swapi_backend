@@ -2,6 +2,7 @@ package com.swapi.controller;
 
 import java.util.List;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.swapi.auth.dto.CustomUserPrincipal;
 import com.swapi.dto.CollectibleItemDtoResponse;
 import com.swapi.dto.UserCollectibleDtoRequest;
 import com.swapi.dto.UserCollectibleDtoResponse;
@@ -26,17 +28,18 @@ public class UserCollectibleController {
 	private final UserCollectibleService userColService;
 	
 	@PostMapping
-	public UserCollectibleDtoResponse createUserColl(@RequestBody UserCollectibleDtoRequest userCollDtoReq) {
-		return userColService.createUserCollectible(userCollDtoReq);
-	}
-	
-//	@GetMapping
-//	public List<CollectibleItemDtoResponse> getCollectibleItemsByUser(@RequestParam(required = false) Long userId) {
-//		return userColService.getCollectiblesByUser(userId);
-//	}
-	
-	@GetMapping
-	public List<CollectibleItemDtoResponse> getCollectibleItemsByUser(UserCollectibleFilter filter) {
-	    return userColService.search(filter);
-	}
+    public UserCollectibleDtoResponse create(
+            @AuthenticationPrincipal CustomUserPrincipal user,
+            @RequestBody UserCollectibleDtoRequest request
+    ) {
+        return userColService.createUserCollectible(user.getUser(), request);
+    }
+
+    @GetMapping()
+    public List<CollectibleItemDtoResponse> getMine(
+            @AuthenticationPrincipal CustomUserPrincipal user,
+            UserCollectibleFilter filter
+    ) {
+        return userColService.search(user.getId(), filter);
+    }
 }

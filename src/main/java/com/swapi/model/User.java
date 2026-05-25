@@ -3,9 +3,14 @@ package com.swapi.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.swapi.auth.dto.AuthProvider;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,8 +30,9 @@ public class User extends RecBase{
 	private String username;
 	@Column(name = "password_hash")
 	private String passwordHash;
-	@Column(name = "auth_provider")
-	private String authProvider;
+	@Enumerated(EnumType.STRING)
+    @Column(name = "auth_provider", nullable = false)
+    private AuthProvider authProvider;
 	@Column(name = "provider_user_id")
 	private String providerUserId;
 	@Column(name = "profile_image_url")
@@ -37,4 +43,12 @@ public class User extends RecBase{
 	
 	@OneToMany(mappedBy = "user")
 	List<UserCollectible> userCollectibles = new ArrayList<>();
+	
+	@Override
+	protected void onCreate() {
+		super.onCreate();
+		if (this.authProvider == null) {
+            this.authProvider = AuthProvider.LOCAL;
+        }
+	}
 }

@@ -4,6 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.swapi.auth.dto.AuthProvider;
 import com.swapi.model.User;
 import com.swapi.repositories.UserRepository;
 
@@ -33,7 +34,7 @@ public class UserSeeder implements CommandLineRunner {
         user.setEmail(email);
         user.setUsername(username);
         user.setPasswordHash(passwordEncoder.encode("123456"));
-        user.setAuthProvider("LOCAL");
+        user.setAuthProvider(AuthProvider.LOCAL);
 //        user.setRole(role);
 //        user.setEnabled(true);
 
