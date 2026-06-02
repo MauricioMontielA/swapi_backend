@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.swapi.dto.CollectibleItemDtoResponse;
 import com.swapi.dto.CollectionDtoResponse;
 import com.swapi.dto.UserDtoResponse;
 import com.swapi.mapper.CollectibleItemMapper;
@@ -42,6 +43,8 @@ public class AdminController {
 	private final CollectionMapper collectionMapper;
 	private final UserRepository userRepo;
 	private final UserMapper userMapper;
+	private final CollectibleItemMapper collectibleItemMapper;
+
 
 	
 	
@@ -56,7 +59,7 @@ public class AdminController {
 	}
 	
 	@PostMapping("/uploadItems")
-	public List<CollectibleItem> uploadCsv(
+	public List<CollectibleItemDtoResponse> uploadCsv(
 	        @RequestParam("file") MultipartFile file,
 	        @RequestParam("collectionCode") String collectionCode
 	) throws Exception {
@@ -88,7 +91,12 @@ public class AdminController {
 	        collectibleItemRepo.save(newColItem);
 	    }
 
-	    return collectibleItemRepo.findAll();
+	    return collectibleItemRepo.findAll()
+	    		.stream()
+	    		.map(item -> {
+	    			CollectibleItemDtoResponse dto = collectibleItemMapper.toResponse(item);
+	    			return dto;
+	    		}).toList();
 	}
 	
 	@GetMapping("/user")

@@ -60,5 +60,13 @@ public class UserCollectibleService {
 	            .map(colItemMapper::toResponse)
 	            .toList();
 	}
+	
+	public List<UserCollectible> getUserCollectibleByIdIn(List<Long> ids){
+		return userCollRepo.findByIdIn(ids);
+	}
+	
+	public boolean isOwner(UserCollectible item, long userId) {
+		return item.getUser().getId().equals(userId);
+	}
 
 }

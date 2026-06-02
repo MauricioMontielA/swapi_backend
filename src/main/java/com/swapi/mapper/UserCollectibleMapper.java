@@ -3,6 +3,7 @@ package com.swapi.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import com.swapi.dto.UserCollTradeDtoResponse;
 import com.swapi.dto.UserCollectibleDtoRequest;
 import com.swapi.dto.UserCollectibleDtoResponse;
 import com.swapi.model.CollectibleItem;
@@ -26,4 +27,9 @@ public interface UserCollectibleMapper {
     @Mapping(target = "username", source = "user.username")
     @Mapping(target = "itemCode", source = "collectibleItem.code")
     UserCollectibleDtoResponse toResponse(UserCollectible entity);
+    
+    @Mapping(target = "id", source = "collectibleItem.id")
+    @Mapping(target = "name", source = "collectibleItem.name")
+    @Mapping(target = "imageUrl", source = "collectibleItem.imageUrl")
+    UserCollTradeDtoResponse toTradeResponse(UserCollectible entity);
 }

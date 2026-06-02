@@ -1,7 +1,9 @@
 package com.swapi.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,8 +39,8 @@ public class UserCollectible extends RecBase{
 	private boolean isForSale;
 	
 	@OneToMany(mappedBy = "userCollectible")
-	List<Listing> listings = new ArrayList<>();
+	Set<Listing> listings = new HashSet<>();
 	
 	@OneToMany(mappedBy = "userCollectible")
-	List<TradeItem> tradeItems = new ArrayList<>();
+	Set<TradeItem> tradeItems = new HashSet<>();
 }

@@ -37,44 +37,6 @@ public class SecurityConfig {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userDetailsService = userDetailsService;
     }
-	
-//	@Bean
-//    @Order(Ordered.HIGHEST_PRECEDENCE)
-//    public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
-//        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-//        
-//        http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-//            .oidc(Customizer.withDefaults()); // Habilita OpenID Connect 1.0
-//        
-//        // Redirige al login cuando no se está autenticado desde el endpoint de autorización
-//        http.exceptionHandling(exceptions -> exceptions
-//            .defaultAuthenticationEntryPointFor(
-//                new LoginUrlAuthenticationEntryPoint("/login"),	
-//                new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
-//            )
-//        );
-//
-//        return http.build();
-//    }
-//
-//    // 2. Cadena de filtros para tus Recursos Protegidos (API)
-//    @Bean
-//    @Order(2)
-//    public SecurityFilterChain resourceServerSecurityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//            .securityMatcher("/api/**") // Aplica solo a tus endpoints de recurso
-//            .authorizeHttpRequests(authorize -> authorize
-//                .anyRequest().authenticated() // Todo en /api/** requiere token
-//            )
-//            // Configura el proyecto para que valide tokens JWT
-//            .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
-//
-//        return http.build();
-//    }
-    
-    
-    
-    
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -90,9 +52,12 @@ public class SecurityConfig {
                             "/auth/login",
                             "/auth/google",
                             "/auth/refresh",
-                            "/h2-console/**"
-                    ).permitAll()
-                    .requestMatchers("/admin/**").hasRole("ADMIN")
+                            "/h2-console/**",
+                            "/error"
+                    )
+                    .permitAll()
+//                    .requestMatchers("/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/admin/**").permitAll()
                     .anyRequest().authenticated()
             )
             .authenticationProvider(authenticationProvider())
@@ -122,24 +87,6 @@ public class SecurityConfig {
     ) throws Exception {
         return config.getAuthenticationManager();
     }
-
-
-	
-        
-        
-        
-        
-        
-        
-//	@Bean
-//    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        return http
-//                .csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests(auth -> auth
-//                        .anyRequest().permitAll()
-//                )
-//                .build();
-//    }
 	
 	@Bean
     public PasswordEncoder passwordEncoder() {

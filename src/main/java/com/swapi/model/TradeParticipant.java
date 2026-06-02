@@ -1,9 +1,15 @@
 package com.swapi.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import com.swapi.model.auxiliar.TradeParticipantStatus;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -28,11 +34,12 @@ public class TradeParticipant extends RecBase{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
-	private String status;
+    @Enumerated(EnumType.STRING)
+	private TradeParticipantStatus status;
 	
 	@OneToMany(mappedBy = "fromParticipant")
-	List<TradeItem> tradeItemsFrom = new ArrayList<>();
+	Set<TradeItem> tradeItemsFrom = new HashSet<>();
 	
 	@OneToMany(mappedBy = "toParticipant")
-	List<TradeItem> tradeItemsTo = new ArrayList<>();
+	Set<TradeItem> tradeItemsTo = new HashSet<>();
 }

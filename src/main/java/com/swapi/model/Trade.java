@@ -1,9 +1,15 @@
 package com.swapi.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import com.swapi.model.auxiliar.TradeStatus;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -19,11 +25,12 @@ import lombok.Setter;
 @Entity
 @Table(name = "sp_trade")
 public class Trade extends RecBase{
-	private String status;
+    @Enumerated(EnumType.STRING)
+	private TradeStatus status;
 	
 	@OneToMany(mappedBy = "trade")
-	List<TradeItem> tradeItems = new ArrayList<>();
+	Set<TradeItem> tradeItems = new HashSet<>();
 	
 	@OneToMany(mappedBy = "trade")
-	List<TradeParticipant> tradeParticipants = new ArrayList<>();
+	Set<TradeParticipant> tradeParticipants = new HashSet<>();
 }

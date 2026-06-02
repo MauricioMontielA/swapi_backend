@@ -2,6 +2,7 @@ package com.swapi.repositories;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -27,4 +28,8 @@ public interface UserCollectibleRepository extends JpaRepository<UserCollectible
 		      AND ci.collection.id = :collectionId
 		""")
 	List<UserCollectible> findByUserIdAndCollectionIdWithItems(Long userId, Long collectionId);
+	
+	
+	@EntityGraph(attributePaths = {"user"})
+	List<UserCollectible> findByIdIn(List<Long> ids);
 }

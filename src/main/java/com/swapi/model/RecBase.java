@@ -1,6 +1,7 @@
 package com.swapi.model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -21,17 +22,17 @@ public class RecBase {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
     @Column(nullable = false, updatable = false, name = "created_at")
-	private Timestamp createdAt;
+	private LocalDateTime createdAt;
 	@Column(name = "modified_at")
-	private Timestamp modifiedAt;
+	private LocalDateTime modifiedAt;
 	
     @PrePersist
     protected void onCreate() {
-        createdAt = new Timestamp(System.currentTimeMillis());
+        createdAt = LocalDateTime.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        modifiedAt = new Timestamp(System.currentTimeMillis());
+        modifiedAt = LocalDateTime.now();
     }
 }

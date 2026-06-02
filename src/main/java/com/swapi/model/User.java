@@ -1,9 +1,12 @@
 package com.swapi.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.swapi.auth.dto.AuthProvider;
+import com.swapi.model.auxiliar.Badget;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,12 +40,17 @@ public class User extends RecBase{
 	private String providerUserId;
 	@Column(name = "profile_image_url")
 	private String profileImageUrl;
+	@Enumerated(EnumType.STRING)
+    @Column(name = "badget", nullable = false)
+	private Badget badget;
+	@Column(name = "rating", nullable = false)
+	private double rating;
 	
 	@OneToMany(mappedBy = "user")
-	List<TradeParticipant> tradeParticipants = new ArrayList<>();
+	Set<TradeParticipant> tradeParticipants = new HashSet<>();
 	
 	@OneToMany(mappedBy = "user")
-	List<UserCollectible> userCollectibles = new ArrayList<>();
+	Set<UserCollectible> userCollectibles = new HashSet<>();
 	
 	@Override
 	protected void onCreate() {

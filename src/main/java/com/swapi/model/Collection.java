@@ -1,7 +1,9 @@
 package com.swapi.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -26,9 +28,9 @@ public class Collection extends RecBase{
 	private String type;
 	
 	@OneToMany(mappedBy = "collection")
-	List<AttributeDefinition> attributeDefinitions = new ArrayList<>();
+	Set<AttributeDefinition> attributeDefinitions = new HashSet<>();
 	
 	@OneToMany(mappedBy = "collection")
     @JsonManagedReference
-	List<CollectibleItem> collectibleItems = new ArrayList<>();
+	Set<CollectibleItem> collectibleItems = new HashSet<>();
 }
