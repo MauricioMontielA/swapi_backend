@@ -6,8 +6,8 @@ import com.swapi.auth.dto.AuthProvider;
 import com.swapi.auth.dto.AuthResponse;
 import com.swapi.auth.dto.GoogleLoginRequest;
 import com.swapi.auth.model.GoogleUserInfo;
-import com.swapi.model.User;
-import com.swapi.repositories.UserRepository;
+import com.swapi.user.User;
+import com.swapi.user.UserRepository;
 
 @Service
 public class GoogleAuthService {

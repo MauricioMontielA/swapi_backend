@@ -13,7 +13,7 @@ import com.swapi.auth.dto.RegisterRequest;
 import com.swapi.auth.service.AuthService;
 import com.swapi.auth.service.GoogleAuthService;
 import com.swapi.auth.service.RefreshTokenService;
-import com.swapi.services.CollectionService;
+import com.swapi.collection.CollectionService;
 
 import lombok.RequiredArgsConstructor;
 

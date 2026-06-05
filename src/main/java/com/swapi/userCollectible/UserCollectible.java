@@ -1,0 +1,52 @@
+package com.swapi.userCollectible;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import com.swapi.collectibleItem.CollectibleItem;
+import com.swapi.listing.Listing;
+import com.swapi.model.RecBase;
+import com.swapi.tradeItem.TradeItem;
+import com.swapi.user.User;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "sp_userCollectible")
+public class UserCollectible extends RecBase{
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "collectible_item_id")
+	private CollectibleItem collectibleItem;
+	private int quantity;
+	private String notes;
+	@Column(name = "is_for_trade")
+	private boolean isForTrade;
+	@Column(name = "is_for_sale")
+	private boolean isForSale;
+	
+	@OneToMany(mappedBy = "userCollectible")
+	Set<Listing> listings = new HashSet<>();
+	
+	@OneToMany(mappedBy = "userCollectible")
+	Set<TradeItem> tradeItems = new HashSet<>();
+}

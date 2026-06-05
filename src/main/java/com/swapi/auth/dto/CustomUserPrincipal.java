@@ -6,7 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.swapi.model.User;
+import com.swapi.user.User;
 
 
 public class CustomUserPrincipal implements UserDetails {

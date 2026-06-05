@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.swapi.auth.model.RefreshToken;
 import com.swapi.auth.repositories.RefreshTokenRepository;
-import com.swapi.model.User;
+import com.swapi.user.User;
 
 import lombok.AllArgsConstructor;
 

@@ -2,7 +2,7 @@ package com.swapi.auth.model;
 
 import java.time.LocalDateTime;
 
-import com.swapi.model.User;
+import com.swapi.user.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

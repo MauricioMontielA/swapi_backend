@@ -9,8 +9,9 @@ import com.swapi.auth.dto.AuthProvider;
 import com.swapi.auth.dto.AuthResponse;
 import com.swapi.auth.dto.LoginRequest;
 import com.swapi.auth.dto.RegisterRequest;
-import com.swapi.model.User;
-import com.swapi.repositories.UserRepository;
+import com.swapi.model.auxiliar.Badge;
+import com.swapi.user.User;
+import com.swapi.user.UserRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -36,6 +37,8 @@ public class AuthService {
         user.setUsername(request.getUsername());
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         user.setAuthProvider(AuthProvider.LOCAL);
+        user.setBadge(Badge.ROOKIE);
+        user.setRating(-1);
 //        user.setRole(Role.USER);
 //        user.setEnabled(true);
 
