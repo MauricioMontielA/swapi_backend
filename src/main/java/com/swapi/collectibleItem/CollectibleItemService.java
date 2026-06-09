@@ -26,7 +26,7 @@ public class CollectibleItemService {
 	private final CollectibleItemMapper collectibleItemMapper;
 	private final CollectionRepository collectionRepo;
 
-	public List<CollectibleItemDtoResponse> getCollectibleItemByCollectionOpt(Long collectionId) {
+	public List<CollectibleItemBasicDto> getCollectibleItemByCollectionOpt(Long collectionId) {
 		List<CollectibleItem> items = null;
 		if (collectionId != null) {
 			items = collectibleItemRepo.findByCollectionId(collectionId);
@@ -34,7 +34,7 @@ public class CollectibleItemService {
 			items = collectibleItemRepo.findAll();
 		}
 
-		return items.stream().map(item -> collectibleItemMapper.toResponse(item)).toList();
+		return items.stream().map(item -> collectibleItemMapper.toBasicResponse(item)).toList();
 	}
 
 	public List<CollectibleItemDtoResponse> uploadItemsForCollectionByCsv(MultipartFile file, String collectionCode) throws IOException {

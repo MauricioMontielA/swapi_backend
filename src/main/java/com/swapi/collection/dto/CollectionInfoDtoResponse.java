@@ -1,4 +1,4 @@
-package com.swapi.collection;
+package com.swapi.collection.dto;
 
 import java.util.Map;
 
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CollectionDtoResponse {
+public class CollectionInfoDtoResponse {
 	private String name;
 	private String code;
 	private String type;

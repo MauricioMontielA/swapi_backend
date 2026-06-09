@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.swapi.collection.CollectionDtoResponse;
+import com.swapi.collection.dto.CollectionInfoDtoResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +19,7 @@ public class CollectibleItemController {
 	private final CollectibleItemService collectibleItemService;
 
 	@GetMapping()
-	public List<CollectibleItemDtoResponse> getCollections(@RequestParam(required = false) Long collectionId) {
+	public List<CollectibleItemBasicDto> getCollectibleItems(@RequestParam(required = false) Long collectionId) {
 		return collectibleItemService.getCollectibleItemByCollectionOpt(collectionId);
 	}
 }

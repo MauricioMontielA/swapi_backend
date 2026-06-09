@@ -24,10 +24,10 @@ import com.swapi.collectibleItem.CollectibleItemMapper;
 import com.swapi.collectibleItem.CollectibleItemRepository;
 import com.swapi.collectibleItem.CollectibleItemService;
 import com.swapi.collection.Collection;
-import com.swapi.collection.CollectionDtoResponse;
 import com.swapi.collection.CollectionMapper;
 import com.swapi.collection.CollectionRepository;
 import com.swapi.collection.CollectionService;
+import com.swapi.collection.dto.CollectionInfoDtoResponse;
 import com.swapi.user.UserMapper;
 import com.swapi.user.UserRepository;
 import com.swapi.user.UserService;
@@ -50,7 +50,7 @@ public class AdminController {
 	}
 	
 	@GetMapping("/collection")
-	public List<CollectionDtoResponse> getAllCollections() {
+	public List<CollectionInfoDtoResponse> getAllCollections() {
 		return collectionService.getAllCollections();
 	}
 	

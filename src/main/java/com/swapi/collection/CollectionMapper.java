@@ -6,10 +6,11 @@ import org.mapstruct.Mapper;
 
 import com.swapi.collectibleItem.CollectibleItem;
 import com.swapi.collectibleItem.CollectibleItemDtoResponse;
+import com.swapi.collection.dto.CollectionInfoDtoResponse;
 
 @Mapper(componentModel = "spring")
 public interface CollectionMapper {
-	CollectionDtoResponse toResponse(Collection collection);
+	CollectionInfoDtoResponse toResponse(Collection collection);
 
-	List<CollectionDtoResponse> toResponseList(List<Collection> collections);
+	List<CollectionInfoDtoResponse> toResponseList(List<Collection> collections);
 }

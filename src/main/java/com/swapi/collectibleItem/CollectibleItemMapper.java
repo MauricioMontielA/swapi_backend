@@ -12,4 +12,6 @@ public interface CollectibleItemMapper {
 	CollectibleItemDtoResponse toResponse(CollectibleItem item);
 
 	List<CollectibleItemDtoResponse> toResponseList(List<CollectibleItem> items);
+	
+	CollectibleItemBasicDto toBasicResponse(CollectibleItem item);
 }
