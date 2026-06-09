@@ -11,6 +11,7 @@ import com.swapi.collectibleItem.CollectibleItemMapper;
 import com.swapi.collectibleItem.CollectibleItemRepository;
 import com.swapi.user.User;
 import com.swapi.user.UserRepository;
+import com.swapi.userCollectible.dto.UserCollectibleCollectionViewDto;
 import com.swapi.userCollectible.dto.UserCollectibleDtoRequest;
 import com.swapi.userCollectible.dto.UserCollectibleDtoResponse;
 import com.swapi.userCollectible.filter.UserCollectibleFilter;
@@ -60,6 +61,10 @@ public class UserCollectibleService {
 	
 	public List<UserCollectible> getUserCollectibleByIdIn(List<Long> ids){
 		return userCollRepo.findByIdIn(ids);
+	}
+	
+	public List<UserCollectibleCollectionViewDto> getCollectibleItemsByUserCollection(Long userId, Long collectionId){
+		return userCollRepo.findOwnershipByUserAndCollection(userId, collectionId);
 	}
 	
 	public boolean isOwner(UserCollectible item, long userId) {

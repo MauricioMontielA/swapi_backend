@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.swapi.auth.dto.CustomUserPrincipal;
 import com.swapi.collectibleItem.CollectibleItemDtoResponse;
 import com.swapi.collection.CollectionService;
+import com.swapi.userCollectible.dto.UserCollectibleCollectionViewDto;
 import com.swapi.userCollectible.dto.UserCollectibleDtoRequest;
 import com.swapi.userCollectible.dto.UserCollectibleDtoResponse;
 import com.swapi.userCollectible.filter.UserCollectibleFilter;
@@ -33,11 +34,19 @@ public class UserCollectibleController {
         return userColService.createUserCollectible(user.getUser(), request);
     }
 
+//    @GetMapping()
+//    public List<CollectibleItemDtoResponse> getMine(
+//            @AuthenticationPrincipal CustomUserPrincipal user,
+//            UserCollectibleFilter filter
+//    ) {
+//        return userColService.search(user.getId(), filter);
+//    }
+    
     @GetMapping()
-    public List<CollectibleItemDtoResponse> getMine(
+    public List<UserCollectibleCollectionViewDto> getMine(
             @AuthenticationPrincipal CustomUserPrincipal user,
-            UserCollectibleFilter filter
+            @RequestParam Long collectionId
     ) {
-        return userColService.search(user.getId(), filter);
+        return userColService.getCollectibleItemsByUserCollection(user.getId(), collectionId);
     }
 }
