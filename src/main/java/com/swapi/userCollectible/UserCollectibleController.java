@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.swapi.auth.dto.CustomUserPrincipal;
 import com.swapi.collectibleItem.CollectibleItemDtoResponse;
 import com.swapi.collection.CollectionService;
-import com.swapi.trade.dto.TradeMatchDto;
+import com.swapi.userCollectible.dto.UserCollectibleMatchRepoDto;
+import com.swapi.userCollectible.dto.UserCollectibleMatchResponseDto;
 import com.swapi.userCollectible.dto.UserCollectibleCollectionViewDto;
 import com.swapi.userCollectible.dto.UserCollectibleDtoRequest;
 import com.swapi.userCollectible.dto.UserCollectibleDtoResponse;
@@ -28,7 +29,7 @@ public class UserCollectibleController {
 	private final UserCollectibleService userColService;
 	
 		@PostMapping
-	    public List<TradeMatchDto> create(
+	    public UserCollectibleMatchResponseDto create(
 	            @AuthenticationPrincipal CustomUserPrincipal user,
 	            @RequestBody UserCollectibleDtoRequest request
 	    ) {

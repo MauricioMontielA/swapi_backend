@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import com.swapi.trade.Trade;
-import com.swapi.trade.dto.TradeMatchDto;
+import com.swapi.userCollectible.dto.UserCollectibleMatchRepoDto;
 import com.swapi.userCollectible.dto.UserCollectibleCollectionViewDto;
 
 public interface UserCollectibleRepository
@@ -111,7 +111,7 @@ public interface UserCollectibleRepository
 			    usefulOfferCount DESC,
 			    missingFromMyOfferCount DESC
 			""", nativeQuery = true)
-	List<TradeMatchDto> findBestMatchesForSwap(Long userId, Long collectionId);
+	List<UserCollectibleMatchRepoDto> findBestMatchesForSwap(Long userId, Long collectionId);
 
 	@Query(value = """
 			SELECT
@@ -149,7 +149,7 @@ public interface UserCollectibleRepository
 			    AND COUNT(DISTINCT candidate_duplicates.collectible_item_id) > 0
 			ORDER BY usefulOfferCount DESC
 						""", nativeQuery = true)
-	List<TradeMatchDto> findBestMatchesForSwapWithItemsIds(Long userId, Long collectionId,
+	List<UserCollectibleMatchRepoDto> findBestMatchesForSwapWithItemsIds(Long userId, Long collectionId,
 			List<Long> offeredItemIds, int offerCount);
 
 }

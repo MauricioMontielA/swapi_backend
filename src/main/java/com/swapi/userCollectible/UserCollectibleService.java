@@ -10,9 +10,10 @@ import com.swapi.collectibleItem.CollectibleItem;
 import com.swapi.collectibleItem.CollectibleItemDtoResponse;
 import com.swapi.collectibleItem.CollectibleItemMapper;
 import com.swapi.collectibleItem.CollectibleItemRepository;
-import com.swapi.trade.dto.TradeMatchDto;
 import com.swapi.user.User;
 import com.swapi.user.UserRepository;
+import com.swapi.userCollectible.dto.UserCollectibleMatchRepoDto;
+import com.swapi.userCollectible.dto.UserCollectibleMatchResponseDto;
 import com.swapi.userCollectible.dto.UserCollectibleCollectionViewDto;
 import com.swapi.userCollectible.dto.UserCollectibleDtoRequest;
 import com.swapi.userCollectible.dto.UserCollectibleDtoResponse;
@@ -31,7 +32,7 @@ public class UserCollectibleService {
 	private final CollectibleItemMapper colItemMapper;
 
 	
-	public List<TradeMatchDto>  createUserCollectible(User user, UserCollectibleDtoRequest dtoRequest) {
+	public UserCollectibleMatchResponseDto  createUserCollectible(User user, UserCollectibleDtoRequest dtoRequest) {
 		List<CollectibleItem> addedItems = collItemRepo.findByIdIn(dtoRequest.getCollectibleItemIds());
 		List<UserCollectible> userItems = userCollRepo
 				.findByUserIdAndCollectibleItemIdIn(user.getId(), dtoRequest.getCollectibleItemIds());
@@ -54,12 +55,24 @@ public class UserCollectibleService {
 			    .toList();
 		
 		if (repeatedItems == null || repeatedItems.isEmpty()) {
-			return new ArrayList<>();
+			return new UserCollectibleMatchResponseDto();
 		}
 		
-		return getSmartSwapsOrderByBestChoice(user.getId(), 
+		List<UserCollectibleMatchRepoDto> matches = getSmartSwapsOrderByBestChoice(user.getId(), 
 				repeatedItems.get(0).getCollectibleItem().getCollection().getId(), 
 				repeatedItems.stream().map(UserCollectible::getId).toList());
+		
+		UserCollectibleMatchResponseDto response = new UserCollectibleMatchResponseDto();
+		response.setMatchInfo(matches);
+		response.setMyItemsToOffer(repeatedItems.stream()
+				.map(repeatedItem -> repeatedItem.getCollectibleItem().getId())
+				.toList());
+
+		return response;
+	}
+	
+	public void getItemsForTrade(Long userToTrade, List<Long> idsForTrade) {
+		
 	}
 	
 	public List<CollectibleItemDtoResponse> getCollectiblesByUser(Long userId) {
@@ -95,11 +108,11 @@ public class UserCollectibleService {
 		return item.getUser().getId().equals(userId);
 	}
 	
-	public List<TradeMatchDto> getSmartSwapsOrderByBestChoice(Long userId, Long collectionId) {
+	public List<UserCollectibleMatchRepoDto> getSmartSwapsOrderByBestChoice(Long userId, Long collectionId) {
 		return getSmartSwapsOrderByBestChoice(userId, collectionId, null);
 	}
 	
-	public List<TradeMatchDto> getSmartSwapsOrderByBestChoice(Long userId, Long collectionId, List<Long> offeredItemIds) {
+	public List<UserCollectibleMatchRepoDto> getSmartSwapsOrderByBestChoice(Long userId, Long collectionId, List<Long> offeredItemIds) {
 		if (userId == null || collectionId == null) {
 			return null;
 		}
