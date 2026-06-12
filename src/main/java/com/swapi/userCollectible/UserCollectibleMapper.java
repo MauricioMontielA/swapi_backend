@@ -1,9 +1,12 @@
 package com.swapi.userCollectible;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.swapi.collectibleItem.CollectibleItem;
+import com.swapi.collectibleItem.CollectibleItemDtoResponse;
 import com.swapi.user.User;
 import com.swapi.userCollectible.dto.UserCollTradeDtoResponse;
 import com.swapi.userCollectible.dto.UserCollectibleDtoRequest;
@@ -26,6 +29,10 @@ public interface UserCollectibleMapper {
     @Mapping(target = "username", source = "user.username")
     @Mapping(target = "itemCode", source = "collectibleItem.code")
     UserCollectibleDtoResponse toResponse(UserCollectible entity);
+    
+    @Mapping(target = "username", source = "user.username")
+    @Mapping(target = "itemCode", source = "collectibleItem.code")
+    List<UserCollectibleDtoResponse> toResponseList(List<UserCollectible> userItems);
     
     @Mapping(target = "id", source = "collectibleItem.id")
     @Mapping(target = "name", source = "collectibleItem.name")

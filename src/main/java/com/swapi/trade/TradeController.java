@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.swapi.auth.dto.CustomUserPrincipal;
 import com.swapi.collection.CollectionService;
+import com.swapi.trade.dto.TradeDtoRequest;
+import com.swapi.trade.dto.TradeDtoResponse;
 
 import lombok.RequiredArgsConstructor;
 

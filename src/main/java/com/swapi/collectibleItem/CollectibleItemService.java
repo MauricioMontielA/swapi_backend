@@ -10,12 +10,21 @@ import java.util.Optional;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.io.input.BOMInputStream;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.swapi.collection.Collection;
 import com.swapi.collection.CollectionRepository;
+import com.swapi.model.auxiliar.TradeParticipantStatus;
+import com.swapi.model.auxiliar.TradeStatus;
+import com.swapi.trade.Trade;
+import com.swapi.trade.dto.TradeDtoResponse;
 
 import lombok.AllArgsConstructor;
 
@@ -36,7 +45,50 @@ public class CollectibleItemService {
 
 		return items.stream().map(item -> collectibleItemMapper.toBasicResponse(item)).toList();
 	}
+	
+	public Page<CollectibleItemBasicDto> getCollectibleItemByCollectionPageable(Long collectionId, String name, int page, int size) {
 
+		Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
+		Page<CollectibleItem> collectibleItemsPage = null;
+		if(name == null || name.isEmpty()) {
+			collectibleItemsPage = collectibleItemRepo.findByCollectionId(collectionId, pageable);
+		}else {
+			collectibleItemsPage = collectibleItemRepo.findByCollectionIdAndNameContainingIgnoreCase(collectionId, name, pageable);
+		}
+		
+		return collectibleItemsPage.map(collectibleItemMapper::toBasicResponse);
+	}
+	
+	
+	
+	
+//	public List<CollectibleItemBasicDto> getCollectibleItemByCollectionPageable(Long collectionId) {
+//		List<CollectibleItem> items = null;
+//		if (collectionId != null) {
+//			items = collectibleItemRepo.findByCollectionId(collectionId);
+//		} else {
+//			items = collectibleItemRepo.findAll();
+//		}
+//
+//		return items.stream().map(item -> collectibleItemMapper.toBasicResponse(item)).toList();
+//	}
+	
+	public List<CollectibleItemBasicDto> searchByName(Long collectionId) {
+		List<CollectibleItem> items = null;
+		if (collectionId != null) {
+			items = collectibleItemRepo.findByCollectionId(collectionId);
+		} else {
+			items = collectibleItemRepo.findAll();
+		}
+
+		return items.stream().map(item -> collectibleItemMapper.toBasicResponse(item)).toList();
+	}
+
+	
+	
+	
+	
+	
 	public List<CollectibleItemDtoResponse> uploadItemsForCollectionByCsv(MultipartFile file, String collectionCode) throws IOException {
 		Optional<Collection> optCollection = collectionRepo.findByCode(collectionCode);
 

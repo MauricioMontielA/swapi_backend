@@ -1,5 +1,7 @@
 package com.swapi.userCollectible.dto;
 
+import java.util.List;
+
 import com.swapi.collectibleItem.CollectibleItem;
 import com.swapi.user.User;
 
@@ -14,9 +16,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserCollectibleDtoRequest {
-	private long collectibleItemId;
-	private int quantity;
-	private String notes;
-	private boolean isForTrade;
-	private boolean isForSale;
+	private List<Long> collectibleItemIds;
 }

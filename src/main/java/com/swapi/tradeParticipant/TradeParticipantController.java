@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.swapi.auth.dto.CustomUserPrincipal;
-import com.swapi.trade.TradeDtoRequest;
 import com.swapi.trade.TradeService;
+import com.swapi.trade.dto.TradeDtoRequest;
 
 import lombok.RequiredArgsConstructor;
 

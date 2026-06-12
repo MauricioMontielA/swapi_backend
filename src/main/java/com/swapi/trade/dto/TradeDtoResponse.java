@@ -1,4 +1,4 @@
-package com.swapi.trade;
+package com.swapi.trade.dto;
 
 import java.time.LocalDateTime;
 

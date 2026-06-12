@@ -3,6 +3,7 @@ package com.swapi.trade;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import com.swapi.trade.dto.TradeDtoResponse;
 import com.swapi.tradeItem.TradeItem;
 import com.swapi.tradeParticipant.TradeParticipant;
 import com.swapi.tradeParticipant.TradeParticipantMapper;
