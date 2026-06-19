@@ -17,4 +17,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserCollectibleDtoRequest {
 	private List<Long> collectibleItemIds;
+	private Long collectionId;
 }

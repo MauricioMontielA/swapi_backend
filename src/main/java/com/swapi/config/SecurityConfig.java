@@ -52,6 +52,9 @@ public class SecurityConfig {
                             "/auth/login",
                             "/auth/google",
                             "/auth/refresh",
+                            "/swagger-ui/**",
+                            "/v3/api-docs/**",
+                            "/swagger-ui.html",
                             "/h2-console/**",
                             "/error"
                     )

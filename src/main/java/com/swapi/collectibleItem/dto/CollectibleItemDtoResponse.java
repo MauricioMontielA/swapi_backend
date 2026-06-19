@@ -1,4 +1,4 @@
-package com.swapi.collectibleItem;
+package com.swapi.collectibleItem.dto;
 
 import java.util.Map;
 

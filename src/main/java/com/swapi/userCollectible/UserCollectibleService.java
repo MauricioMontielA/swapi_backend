@@ -7,13 +7,16 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.swapi.collectibleItem.CollectibleItem;
-import com.swapi.collectibleItem.CollectibleItemDtoResponse;
 import com.swapi.collectibleItem.CollectibleItemMapper;
 import com.swapi.collectibleItem.CollectibleItemRepository;
+import com.swapi.collectibleItem.dto.CollectibleItemBasicDto;
+import com.swapi.collectibleItem.dto.CollectibleItemDtoResponse;
+import com.swapi.trade.dto.TradeCandidateItemsDto;
 import com.swapi.user.User;
 import com.swapi.user.UserRepository;
 import com.swapi.userCollectible.dto.UserCollectibleMatchRepoDto;
 import com.swapi.userCollectible.dto.UserCollectibleMatchResponseDto;
+import com.swapi.userCollectible.dto.UserColMatchInfoRequestDto;
 import com.swapi.userCollectible.dto.UserCollectibleCollectionViewDto;
 import com.swapi.userCollectible.dto.UserCollectibleDtoRequest;
 import com.swapi.userCollectible.dto.UserCollectibleDtoResponse;
@@ -59,7 +62,7 @@ public class UserCollectibleService {
 		}
 		
 		List<UserCollectibleMatchRepoDto> matches = getSmartSwapsOrderByBestChoice(user.getId(), 
-				repeatedItems.get(0).getCollectibleItem().getCollection().getId(), 
+				dtoRequest.getCollectionId(), 
 				repeatedItems.stream().map(UserCollectible::getId).toList());
 		
 		UserCollectibleMatchResponseDto response = new UserCollectibleMatchResponseDto();

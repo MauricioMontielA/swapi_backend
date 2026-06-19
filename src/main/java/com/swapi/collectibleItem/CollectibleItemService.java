@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.swapi.collectibleItem.dto.CollectibleItemBasicDto;
+import com.swapi.collectibleItem.dto.CollectibleItemDtoResponse;
 import com.swapi.collection.Collection;
 import com.swapi.collection.CollectionRepository;
 import com.swapi.model.auxiliar.TradeParticipantStatus;

@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.swapi.auth.dto.CustomUserPrincipal;
 import com.swapi.collection.CollectionService;
+import com.swapi.trade.dto.TradeCandidateItemsDto;
 import com.swapi.trade.dto.TradeDtoRequest;
 import com.swapi.trade.dto.TradeDtoResponse;
+import com.swapi.userCollectible.dto.UserColMatchInfoRequestDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,5 +42,11 @@ public class TradeController {
 	        @RequestParam(defaultValue = "20") int size
 	) {
 		return tradeService.getTradesByStatus(user.getId(), status, page, size);
+	}
+	
+	@GetMapping("/proposal-items")
+	public TradeCandidateItemsDto getTradeProposalItems(@AuthenticationPrincipal CustomUserPrincipal user,
+			@RequestBody UserColMatchInfoRequestDto request) {
+		return tradeService.getCandidateItemsInfoByTargetUser(user.getId(), request);
 	}
 }

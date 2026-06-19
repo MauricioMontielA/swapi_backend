@@ -5,6 +5,9 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import com.swapi.collectibleItem.dto.CollectibleItemBasicDto;
+import com.swapi.collectibleItem.dto.CollectibleItemDtoResponse;
+
 @Mapper(componentModel = "spring")
 public interface CollectibleItemMapper {
 	@Mapping(source = "collection.id", target = "collectionId")

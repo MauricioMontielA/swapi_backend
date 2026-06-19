@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.swapi.collectibleItem.CollectibleItem;
-import com.swapi.collectibleItem.CollectibleItemDtoResponse;
 import com.swapi.collectibleItem.CollectibleItemMapper;
 import com.swapi.collectibleItem.CollectibleItemRepository;
 import com.swapi.collectibleItem.CollectibleItemService;
+import com.swapi.collectibleItem.dto.CollectibleItemDtoResponse;
 import com.swapi.collection.Collection;
 import com.swapi.collection.CollectionMapper;
 import com.swapi.collection.CollectionRepository;

@@ -6,9 +6,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.swapi.collectibleItem.CollectibleItem;
-import com.swapi.collectibleItem.CollectibleItemDtoResponse;
+import com.swapi.collectibleItem.dto.CollectibleItemDtoResponse;
 import com.swapi.user.User;
-import com.swapi.userCollectible.dto.UserCollTradeDtoResponse;
+import com.swapi.userCollectible.dto.UserCollectibleBasicInfoDto;
 import com.swapi.userCollectible.dto.UserCollectibleDtoRequest;
 import com.swapi.userCollectible.dto.UserCollectibleDtoResponse;
 
@@ -34,8 +34,8 @@ public interface UserCollectibleMapper {
     @Mapping(target = "itemCode", source = "collectibleItem.code")
     List<UserCollectibleDtoResponse> toResponseList(List<UserCollectible> userItems);
     
-    @Mapping(target = "id", source = "collectibleItem.id")
-    @Mapping(target = "name", source = "collectibleItem.name")
-    @Mapping(target = "imageUrl", source = "collectibleItem.imageUrl")
-    UserCollTradeDtoResponse toTradeResponse(UserCollectible entity);
+    @Mapping(target = "collectibleItemNumber", source = "id")
+    @Mapping(target = "collectibleItemName", source = "collectibleItem.name")
+    @Mapping(target = "collectibleItemImageUrl", source = "collectibleItem.imageUrl")
+    UserCollectibleBasicInfoDto toTradeResponse(UserCollectible entity);
 }

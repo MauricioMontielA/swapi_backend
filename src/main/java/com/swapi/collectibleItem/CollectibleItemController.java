@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.swapi.auth.dto.CustomUserPrincipal;
+import com.swapi.collectibleItem.dto.CollectibleItemBasicDto;
 import com.swapi.collection.dto.CollectionInfoDtoResponse;
 import com.swapi.trade.dto.TradeDtoResponse;
 

@@ -7,8 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
+import com.swapi.collectibleItem.dto.CollectibleItemBasicDto;
 import com.swapi.trade.Trade;
 import com.swapi.userCollectible.dto.UserCollectibleMatchRepoDto;
+import com.swapi.userCollectible.dto.UserCollectibleBasicInfoDto;
 import com.swapi.userCollectible.dto.UserCollectibleCollectionViewDto;
 
 public interface UserCollectibleRepository
@@ -40,10 +42,7 @@ public interface UserCollectibleRepository
 //		    FROM Trade t
 //		    WHERE t.id IN :ids
 //		""")
-	@EntityGraph(attributePaths = { 
-			"collectibleItem", 
-			"collectibleItem.collection" 
-	})
+	@EntityGraph(attributePaths = { "collectibleItem", "collectibleItem.collection" })
 	List<UserCollectible> findByUserIdAndCollectibleItemIdIn(Long userId, List<Long> collectibleItemId);
 
 	@Query(value = """
@@ -151,5 +150,57 @@ public interface UserCollectibleRepository
 						""", nativeQuery = true)
 	List<UserCollectibleMatchRepoDto> findBestMatchesForSwapWithItemsIds(Long userId, Long collectionId,
 			List<Long> offeredItemIds, int offerCount);
+
+	@Query(value = """
+			SELECT
+			    candidate_uc.id,
+			    ci.number,
+			    ci.name,
+			    ci.image_url
+			FROM sp_userCollectible candidate_uc
+			JOIN sp_collectibleItem ci
+			    ON ci.id = candidate_uc.collectible_item_id
+			WHERE candidate_uc.user_id = :targetUserId
+			  AND candidate_uc.quantity > 1
+			  AND ci.collection_id = :collectionId
+			  AND NOT EXISTS (
+			      SELECT 1
+			      FROM sp_userCollectible my_uc
+			      WHERE my_uc.user_id = :userId
+			        AND my_uc.collectible_item_id = candidate_uc.collectible_item_id
+			        AND my_uc.quantity > 0
+			  )
+			ORDER BY ci.id
+			""", nativeQuery = true)
+	List<UserCollectibleBasicInfoDto> getDesiredItemsFromTargetUser(Long userId, Long targetUserId, Long collectionId);
+
+	@Query(value = """
+			SELECT
+			    my_uc.id,
+			    ci.number,
+			    ci.name,
+			    ci.image_url
+			FROM sp_userCollectible my_uc
+			JOIN sp_collectibleItem ci
+			    ON ci.id = my_uc.collectible_item_id
+			WHERE my_uc.user_id = :userId
+			  AND my_uc.quantity > 1
+			  AND (
+			  	:useFilter = 0
+			    OR my_uc.collectible_item_id IN (:offeredItemIds)
+			  )
+			  AND my_uc.collectible_item_id IN (:offeredItemIds)
+			  AND ci.collection_id = :collectionId
+			  AND NOT EXISTS (
+			      SELECT 1
+			      FROM sp_userCollectible candidate_uc
+			      WHERE candidate_uc.user_id = :targetUserId
+			        AND candidate_uc.collectible_item_id = my_uc.collectible_item_id
+			        AND candidate_uc.quantity > 0
+			  )
+			ORDER BY ci.number
+			""", nativeQuery = true)
+	List<UserCollectibleBasicInfoDto> getOfferableItemsToTargetUser(Long userId, Long targetUserId, Long collectionId, int useFilter,
+			List<Long> offeredItemIds);
 
 }

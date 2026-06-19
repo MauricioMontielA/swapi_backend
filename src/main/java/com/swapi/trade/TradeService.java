@@ -17,11 +17,13 @@ import org.springframework.stereotype.Service;
 
 import com.swapi.collectibleItem.CollectibleItemMapper;
 import com.swapi.collectibleItem.CollectibleItemRepository;
+import com.swapi.collectibleItem.dto.CollectibleItemBasicDto;
 import com.swapi.exception.BadRequestException;
 import com.swapi.exception.RecordNotFoundException;
 import com.swapi.model.auxiliar.TradeParticipantStatus;
 import com.swapi.model.auxiliar.TradeStatus;
 import com.swapi.trade.dto.TradeAttributesDto;
+import com.swapi.trade.dto.TradeCandidateItemsDto;
 import com.swapi.trade.dto.TradeDtoRequest;
 import com.swapi.trade.dto.TradeDtoResponse;
 import com.swapi.tradeItem.TradeItem;
@@ -34,6 +36,8 @@ import com.swapi.userCollectible.UserCollectible;
 import com.swapi.userCollectible.UserCollectibleMapper;
 import com.swapi.userCollectible.UserCollectibleRepository;
 import com.swapi.userCollectible.UserCollectibleService;
+import com.swapi.userCollectible.dto.UserColMatchInfoRequestDto;
+import com.swapi.userCollectible.dto.UserCollectibleBasicInfoDto;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +50,7 @@ public class TradeService {
 	private final TradeItemRepository tradeItemRepo;
 	private final TradeParticipantRepository tradeParticipantRepo;
 	private final TradeMapper tradeMapper;
+	private final UserCollectibleRepository userCollRepo;
 
 
 	@Transactional
@@ -175,6 +180,22 @@ public class TradeService {
         
         tradeParticipantRepo.save(participant);
         tradeRepo.save(trade);
+	}
+	
+	public TradeCandidateItemsDto getCandidateItemsInfoByTargetUser(Long userId, UserColMatchInfoRequestDto request) {
+		if (userId == null || request == null) {
+			return null;
+		}
+		
+		List<UserCollectibleBasicInfoDto> desiredItemsForTarget = userCollRepo.getDesiredItemsFromTargetUser(userId, 
+				request.getTargetUserId(), request.getCollectionId());
+		
+		int useFilter = request.getFilteredIds() == null || request.getFilteredIds().isEmpty() ? 0 : 1;
+		List<Long> filteredIds = useFilter == 1 ? request.getFilteredIds() : List.of(-1L);
+		List<UserCollectibleBasicInfoDto> offeredItemsToTarget = userCollRepo.getOfferableItemsToTargetUser(userId, 
+				request.getTargetUserId(), request.getCollectionId(), useFilter, filteredIds);
+
+		return new TradeCandidateItemsDto(desiredItemsForTarget, offeredItemsToTarget);
 	}
 
 	private <T> List<T> getList(List<TradeAttributesDto> tradeAtts, Function<TradeAttributesDto, T> mapper) {
