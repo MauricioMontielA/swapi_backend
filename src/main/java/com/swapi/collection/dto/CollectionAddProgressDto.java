@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CollectionAddProgressDto extends CollectionAddDto{
 	private long id;
-	private String title;
+	private String name;
 	private String description;
 	private String imageUrl;
 	private double progress;

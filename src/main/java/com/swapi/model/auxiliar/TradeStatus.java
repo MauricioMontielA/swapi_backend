@@ -1,9 +1,8 @@
 package com.swapi.model.auxiliar;
 
 public enum TradeStatus {
-	PROPOSED,
-	ACCEPTED,
-	CANCELLED,
+	OPEN,
+	IN_PROGRESS,
 	COMPLETED,
-	REJECTED
+	CANCELLED
 }

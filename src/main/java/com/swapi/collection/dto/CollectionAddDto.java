@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CollectionAddDto {
 	private long id;
-	private String title;
+	private String name;
 	private String description;
 	private String imageUrl;
 }

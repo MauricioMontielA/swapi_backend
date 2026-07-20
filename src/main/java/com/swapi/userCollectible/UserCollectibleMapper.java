@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.swapi.collectibleItem.CollectibleItem;
-import com.swapi.collectibleItem.dto.CollectibleItemDtoResponse;
+import com.swapi.tradeItem.dto.TradeItemoGeneralViewDto;
 import com.swapi.user.User;
 import com.swapi.userCollectible.dto.UserCollectibleBasicInfoDto;
 import com.swapi.userCollectible.dto.UserCollectibleDtoRequest;
@@ -38,4 +38,10 @@ public interface UserCollectibleMapper {
     @Mapping(target = "collectibleItemName", source = "collectibleItem.name")
     @Mapping(target = "collectibleItemImageUrl", source = "collectibleItem.imageUrl")
     UserCollectibleBasicInfoDto toTradeResponse(UserCollectible entity);
+    
+    @Mapping(target = "id", source = "collectibleItem.id")
+    @Mapping(target = "name", source = "collectibleItem.name")
+    @Mapping(target = "number", source = "collectibleItem.name")
+    @Mapping(target = "imageUrl", source = "collectibleItem.imageUrl")
+    TradeItemoGeneralViewDto toItemGeneralView(UserCollectible userCollectible);
 }

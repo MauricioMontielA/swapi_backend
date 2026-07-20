@@ -1,11 +1,9 @@
 package com.swapi.trade;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Function;
 
 import org.springframework.data.domain.Page;
@@ -15,9 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.swapi.collectibleItem.CollectibleItemMapper;
-import com.swapi.collectibleItem.CollectibleItemRepository;
-import com.swapi.collectibleItem.dto.CollectibleItemBasicDto;
 import com.swapi.exception.BadRequestException;
 import com.swapi.exception.RecordNotFoundException;
 import com.swapi.model.auxiliar.TradeParticipantStatus;
@@ -26,14 +21,13 @@ import com.swapi.trade.dto.TradeAttributesDto;
 import com.swapi.trade.dto.TradeCandidateItemsDto;
 import com.swapi.trade.dto.TradeDtoRequest;
 import com.swapi.trade.dto.TradeDtoResponse;
+import com.swapi.trade.dto.TradeGeneralViewResDto;
 import com.swapi.tradeItem.TradeItem;
 import com.swapi.tradeItem.TradeItemRepository;
 import com.swapi.tradeParticipant.ParticipantStatusUpdateNotAllowedException;
 import com.swapi.tradeParticipant.TradeParticipant;
 import com.swapi.tradeParticipant.TradeParticipantRepository;
-import com.swapi.user.UserRepository;
 import com.swapi.userCollectible.UserCollectible;
-import com.swapi.userCollectible.UserCollectibleMapper;
 import com.swapi.userCollectible.UserCollectibleRepository;
 import com.swapi.userCollectible.UserCollectibleService;
 import com.swapi.userCollectible.dto.UserColMatchInfoRequestDto;
@@ -70,7 +64,7 @@ public class TradeService {
 		Map<Long, TradeParticipant> mapUserIdParticipant = new HashMap<>();
 
 		Trade trade = new Trade();
-		trade.setStatus(TradeStatus.PROPOSED);
+		trade.setStatus(TradeStatus.OPEN);
 		tradeRepo.save(trade);
 
 		for (UserCollectible userCollectible : userColList) {
@@ -112,30 +106,23 @@ public class TradeService {
 
 	}
 
-	public Page<TradeDtoResponse> getTradesByStatus(Long userId, String status, int page, int size) {
+	public Page<TradeGeneralViewResDto> getTradesByStatus(Long userId, String status, int page, int size) {
 
 		Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 		Page<Long> tradeIdsPage = null;
 		
-		if (status.equals(TradeStatus.CANCELLED.name()) || status.equals(TradeStatus.COMPLETED.name())) {
-	        TradeStatus tradeStatus = TradeStatus.valueOf(status);
+		TradeStatus tradeStatus = TradeStatus.valueOf(status);
 
-			tradeIdsPage = tradeRepo.findTradeIdsForStatusAndUser(tradeStatus, userId,  pageable);
-		} else {
-	        TradeParticipantStatus tradePartStatus = TradeParticipantStatus.valueOf(status);
-
-			tradeIdsPage = tradeRepo.findTradeIdsForPartStatusAndUser(tradePartStatus, userId,
-					List.of(TradeStatus.CANCELLED, TradeStatus.COMPLETED), pageable);
-		}
+		tradeIdsPage = tradeRepo.findTradeIdsForStatusAndUser(tradeStatus, userId,  pageable);
 
 		if (tradeIdsPage == null || tradeIdsPage.isEmpty()) {
 			return Page.empty(pageable);
 		}
 
 		List<Trade> trades = tradeRepo.findTradesWithDetailsByIdIn(tradeIdsPage.getContent());
-		List<TradeDtoResponse> tradesResponse = trades.stream()
+		List<TradeGeneralViewResDto> tradesResponse = trades.stream()
 			.map(trade ->{
-				TradeDtoResponse tradeDto = tradeMapper.toResponse(trade, userId);
+				TradeGeneralViewResDto tradeDto = tradeMapper.toGeneralViewResponse(trade, userId, 1);
 				return tradeDto;
 			})
 			.toList();
@@ -161,21 +148,21 @@ public class TradeService {
 
         participant.setStatus(participantStatus);
         
-        if (participant.getStatus().equals(TradeParticipantStatus.APPROVED)) {
+        if (participant.getStatus().equals(TradeParticipantStatus.ACCEPTED)) {
         	boolean allAccepted = true;
             
             for(TradeParticipant tradePart : trade.getTradeParticipants()) {
-            	if (!tradePart.getStatus().equals(TradeParticipantStatus.APPROVED) && !tradePart.getStatus().equals(TradeParticipantStatus.PROPOSED)) {
+            	if (!tradePart.getStatus().equals(TradeParticipantStatus.ACCEPTED) && !tradePart.getStatus().equals(TradeParticipantStatus.PROPOSED)) {
             		allAccepted = false;
             		break;
     			}
             }
             
             if (allAccepted) {
-            	trade.setStatus(TradeStatus.ACCEPTED);
+            	trade.setStatus(TradeStatus.IN_PROGRESS);
     		}
 		}else if(participant.getStatus().equals(TradeParticipantStatus.REJECTED)) {
-        	trade.setStatus(TradeStatus.REJECTED);
+        	trade.setStatus(TradeStatus.CANCELLED);
 		}
         
         tradeParticipantRepo.save(participant);
@@ -194,6 +181,10 @@ public class TradeService {
 		List<Long> filteredIds = useFilter == 1 ? request.getFilteredIds() : List.of(-1L);
 		List<UserCollectibleBasicInfoDto> offeredItemsToTarget = userCollRepo.getOfferableItemsToTargetUser(userId, 
 				request.getTargetUserId(), request.getCollectionId(), useFilter, filteredIds);
+		
+		System.out.println(desiredItemsForTarget);
+		System.out.println(offeredItemsToTarget);
+
 
 		return new TradeCandidateItemsDto(desiredItemsForTarget, offeredItemsToTarget);
 	}
