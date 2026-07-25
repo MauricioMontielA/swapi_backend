@@ -2,6 +2,8 @@ package com.swapi.userCollectible;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -44,23 +46,25 @@ public interface UserCollectibleRepository
 //		""")
 	@EntityGraph(attributePaths = { "collectibleItem", "collectibleItem.collection" })
 	List<UserCollectible> findByUserIdAndCollectibleItemIdIn(Long userId, List<Long> collectibleItemId);
-
+	
 	@Query(value = """
 			SELECT
-				sci.id,
+				SCI.id,
 				sci.number,
 				CASE
-					WHEN suc.id IS NOT NULL THEN TRUE
-					ELSE FALSE
-				END AS owned,
+					WHEN suc.id IS NULL THEN 0
+					ELSE 1
+				END owned,
 				sci.image_url
 			FROM
 				sp_collectibleItem sci
 			LEFT JOIN sp_userCollectible suc ON
-				suc.collectible_item_id = sci.id AND suc.user_id = :userId
-			WHERE sci.collection_id  = :collectionId
-						""", nativeQuery = true)
-	List<UserCollectibleCollectionViewDto> findOwnershipByUserAndCollection(Long userId, Long collectionId);
+				suc.collectible_item_id = sci.id
+				AND SUC.user_id = :userId
+			WHERE
+				collection_id = :collectionId
+				""", nativeQuery = true)
+		Page<UserCollectibleCollectionViewDto> findOwnershipByUserAndCollection(Long collectionId, Long userId, Pageable pageable);
 
 	@Query(value = """
 			SELECT

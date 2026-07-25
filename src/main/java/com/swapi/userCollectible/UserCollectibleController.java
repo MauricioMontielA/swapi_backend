@@ -2,6 +2,7 @@ package com.swapi.userCollectible;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,10 +38,12 @@ public class UserCollectibleController {
     }
     
     @GetMapping()
-    public List<UserCollectibleCollectionViewDto> getMine(
+    public Page<UserCollectibleCollectionViewDto> getMine(
             @AuthenticationPrincipal CustomUserPrincipal user,
-            @RequestParam Long collectionId
+            @RequestParam Long collectionId,
+            @RequestParam(defaultValue = "0") int page,
+	        @RequestParam(defaultValue = "30") int size
     ) {
-        return userColService.getCollectibleItemsByUserCollection(user.getId(), collectionId);
+        return userColService.getCollectibleItemsByUserCollection(user.getId(), collectionId, page, size);
     }
 }

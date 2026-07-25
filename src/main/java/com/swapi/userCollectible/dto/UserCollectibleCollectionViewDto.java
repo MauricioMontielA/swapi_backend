@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserCollectibleCollectionViewDto {
-	private Integer id;
+	private Number id;
 	private String number;
-	private Integer owned;
+	private Number owned;
 	private String imageUrl;
 }

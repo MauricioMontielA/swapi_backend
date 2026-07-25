@@ -61,20 +61,6 @@ public class CollectibleItemService {
 		return collectibleItemsPage.map(collectibleItemMapper::toBasicResponse);
 	}
 	
-	
-	
-	
-//	public List<CollectibleItemBasicDto> getCollectibleItemByCollectionPageable(Long collectionId) {
-//		List<CollectibleItem> items = null;
-//		if (collectionId != null) {
-//			items = collectibleItemRepo.findByCollectionId(collectionId);
-//		} else {
-//			items = collectibleItemRepo.findAll();
-//		}
-//
-//		return items.stream().map(item -> collectibleItemMapper.toBasicResponse(item)).toList();
-//	}
-	
 	public List<CollectibleItemBasicDto> searchByName(Long collectionId) {
 		List<CollectibleItem> items = null;
 		if (collectionId != null) {

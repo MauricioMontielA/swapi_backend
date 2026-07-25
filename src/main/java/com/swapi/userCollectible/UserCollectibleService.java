@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.swapi.collectibleItem.CollectibleItem;
@@ -103,8 +107,9 @@ public class UserCollectibleService {
 		return userCollRepo.findByIdIn(ids);
 	}
 	
-	public List<UserCollectibleCollectionViewDto> getCollectibleItemsByUserCollection(Long userId, Long collectionId){
-		return userCollRepo.findOwnershipByUserAndCollection(userId, collectionId);
+	public Page<UserCollectibleCollectionViewDto> getCollectibleItemsByUserCollection(Long collectionId, Long userId, int page, int size) {
+		Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
+		return userCollRepo.findOwnershipByUserAndCollection(userId, collectionId, pageable);
 	}
 	
 	public boolean isOwner(UserCollectible item, long userId) {
